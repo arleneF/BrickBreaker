@@ -1,6 +1,6 @@
 /*
  * plotting_api.h
- *
+ *	Reference: Borrow from Wesley Kandel's code
  *  Created on: Mar 10, 2018
  *      Author: JFA49
  */
@@ -12,7 +12,6 @@
 #include "vga_text.h"
 #include "display_api.h"
 #include <stdlib.h>
-
 #define DISPLAY_MEMORY_BASE	0x01000000
 
 // define the axis of the plot.
@@ -39,7 +38,7 @@ void plot_init() {
 	display_swap_buffers();
 }
 
-void plot_outline() {
+void plot_outline(int level, int count) {
 	define_3_walls();
 //	xil_printf("9\n\r");
 	display_fill_screen(_background_color);
@@ -48,9 +47,22 @@ void plot_outline() {
 	display_draw_rect(0xff99ff00, rightwall);
 //	xil_printf("11\n\r");
 	display_draw_rect(0xff99ff00, leftwall);
+	char str[]="Level ";
+	int len = strlen(str);\
+	str[len] = level +'0';
+	str[len+1] = '\0';
+	parse_text(strupr(str), sizeof(str),0x00000000,25,3);
+	char str2[]="bricks    ";
+	int len2 = strlen(str2);\
+	str2[len2-2] = (count/100)+'0';
+	str2[len2-1] = ((count/10)%10 )+'0';
+	str2[len2] = (count-(count/10)*10 )+'0';
+	str2[len2+1] = '\0';
+//		xil_printf("%c\n\r", count +'0');
+	parse_text(strupr(str2), sizeof(str2),0x00000000,665,3);
 
-	char str[]="Level : 1";
-	parse_text(strupr(str), sizeof(str),0xFFFFFFFF,50,580);
+
+
 // level : 1.
 }
 
@@ -84,7 +96,7 @@ void plot_line(int x, int y, int xlong, int ylong, u32 color){
 	display_draw_rect(color, paddle);
 }
 void plot_Gameover(u32 color){
-	char str[]="game over";
+	char str[]="game over   please push the center button to restart the game";
 	parse_text(strupr(str), sizeof(str),color,50,50);
 }
 
@@ -101,7 +113,7 @@ void plot_Gamepause(u32 color){
 	parse_text(strupr(str), sizeof(str),color,50,50);
 }
 void plot_Gamestart(u32 color){
-	char str[]="welcome, please push the center bottom to start.";
+	char str[]="welcome please push the center bottom to start.";
 	parse_text(strupr(str), sizeof(str),color,50,50);
 }
 

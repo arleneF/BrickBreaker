@@ -1,6 +1,6 @@
 /*
  * vdma_api.h
- *
+ *	Reference: Borrow from Wesley Kandel's code
  *  Created on: Mar 3, 2018
  *      Author: JFA49
  */

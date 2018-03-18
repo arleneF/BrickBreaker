@@ -1,7 +1,7 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
---Date        : Thu Mar 15 13:20:57 2018
+--Date        : Sat Mar 17 20:47:12 2018
 --Host        : ensc-pit-07 running 64-bit major release  (build 9200)
 --Command     : generate_target dma_design_1.bd
 --Design      : dma_design_1
@@ -2048,7 +2048,7 @@ entity dma_design_1 is
     vsync_0 : out STD_LOGIC
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of dma_design_1 : entity is "dma_design_1,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=dma_design_1,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=26,numReposBlks=18,numNonXlnxBlks=1,numHierBlks=8,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=3,numPkgbdBlks=0,bdsource=USER,da_axi4_cnt=7,da_board_cnt=3,da_clkrst_cnt=4,synth_mode=OOC_per_IP}";
+  attribute CORE_GENERATION_INFO of dma_design_1 : entity is "dma_design_1,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=dma_design_1,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=26,numReposBlks=18,numNonXlnxBlks=1,numHierBlks=8,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=3,numPkgbdBlks=0,bdsource=USER,da_axi4_cnt=7,da_board_cnt=3,da_clkrst_cnt=5,synth_mode=OOC_per_IP}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of dma_design_1 : entity is "dma_design_1.hwdef";
 end dma_design_1;

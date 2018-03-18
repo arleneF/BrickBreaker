@@ -14,10 +14,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <string.h>
+//#include "game_logic.h"
 
 //sam 01
 #include <math.h>
-#include <string.h>
 #include <stdlib.h>
 #include "platform.h"
 #include "xil_io.h"
@@ -44,46 +44,16 @@ int init_paddle_y0=560;
 int init_ball_r = 3;
 //sam 02
 int brick_level = 1;
-int count =0;
-int PanelPosition = 7;
+int count = 0, next_level = 20;
 int brick_size = 360;
 int paddle_width = 60;
 int init_ball_x = 400;
 int init_ball_y = 550;
-u32 brick_color[5] = {0x00000000, 0xffefff00, 0xff99ff00, 0xff66ff00, 0xff00ff00};
-int ball_x [5] ={400, 400, 400, 400, 400};
-int ball_y [5] ={550, 550, 550, 550, 550};
+u32 brick_color[5] = {0x00000000, 0xffeeff00, 0xffaaff00, 0xff66ff00, 0xff00ff00};
+int ball_x [20] ={400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400};
+int ball_y [20] ={550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550, 550};
+u32 ball_color[10] = {0xccccff00, 0x9999ff00, 0x6666ff00, 0x3333ff00, 0x0000ff00, 0x0000cc00, 0x00009900, 0x00006600, 0x00003300, 0x00000000};
 
-
-
-
-void append(char* s, int c)
-{
-	c = tolower(c);
-	int len = strlen(s);
-	s[len] = c;
-	s[len+1] = '\0';
-}
-void PlayOneNote(int note, int volume, int time) {
-	int notevaule = 1, volumevaule = 1;
-	for(int i=0; i<note-1; i++){
-		notevaule = notevaule * 2;
-	}
-	for(int i=0; i<volume-1; i++){
-		volumevaule = volumevaule * 2;
-	}
-    Xil_Out8(0x41200000,0x01*notevaule);
-	Xil_Out32(0x41210000,0x00001000*volumevaule);
-	int number=0;
-	while(1){
-		number++;
-    	if(number == time*100000){
-    		Xil_Out8(0x41200000,0x00);
-			Xil_Out32(0x41210000,0x00000000);
-			break;
-    	}
-	}
-}
 void ReadLine (char* str){
     while(1){
     	int choice = inbyte();
@@ -136,6 +106,7 @@ void ReadLine (char* str){
 
 }
 
+
 float randomSpeed (int ball){
 	return ball;
 	if (XGpio_DiscreteRead(&LFSR_IN, 1) % 2){
@@ -147,8 +118,7 @@ float randomSpeed (int ball){
 		return ball - 1;
 	}
 }
-
-void BallNextPosition( int *Ball, int *bricks, int PanelPosition){
+void BallNextPosition( int *Ball, int *bricks){
 	int XbricksPosition , YbricksPosition;
 	if(((Ball[0]+Ball[1])-40)/30<=23){XbricksPosition=((Ball[2]-40)/20*24+((Ball[0]+Ball[1])-40)/30);}else{XbricksPosition=-1;}
 	if((Ball[0]-40)/30<=23){YbricksPosition=(((Ball[2] + Ball[3])-40)/20*24+(Ball[0]-40)/30);}else{YbricksPosition=-1;}
@@ -251,50 +221,43 @@ void BallNextPosition( int *Ball, int *bricks, int PanelPosition){
     }
     Ball[0] = Ball[0] + Ball[1];
     Ball[2] = Ball[2] + Ball[3];
-//	for(int i=4; i>0; i--){
-//		ball_x[i] = ball_x[i-1];
-//		ball_y[i] = ball_y[i-1];
-//	}
-//	ball_x[0] = Ball[0];
-//	ball_y[0] = Ball[2];
+	for(int i=19; i>0; i--){
+		ball_x[i] = ball_x[i-1];
+		ball_y[i] = ball_y[i-1];
+	}
+	ball_x[0] = Ball[0];
+	ball_y[0] = Ball[2];
 }
 
 
-//int PlayGame (){
-//	int count =0;
-//	int bricks[ brick_size ];
-//	float Ball[4] = { 40.0, -0.1, 50.0, 0.2 };
-//    for(int i=0; i< brick_size; i++){
-//    	 bricks[i] = XGpio_DiscreteRead(&LFSR_IN, 1) % 5;
-//    }
-//    for(int i=0; i< brick_size; i++){
-//    	printf(" [%d]", bricks[i]);
-//    	if(bricks[i] > 0){
-//    		 count++;
-//    	}
-//    }
-//    printf("\n\r brick count %d\n\r",count);
-//    while(1){
-//    	BallNextPosition((float *)&Ball, (int *)&bricks, PanelPosition);
-//    	usleep(10);
-////    	printf(" [%f, %f, %f, %f]", Ball[0], Ball[1], Ball[2], Ball[3]);
-//    	if(Ball[2] > 470){
-//    		printf(" [%f, %f, %f, %f]", Ball[0], Ball[1], Ball[2], Ball[3]);
-//    		count=0;
-//    	    for(int i=0; i< brick_size; i++){
-////    	    	printf(" [%d]", bricks[i]);
-//    	    	if(bricks[i] > 0){
-//    	    		 count++;
-//    	    	}
-//    	    }
-//    		printf("Game over: brick left %d\n\r", count);
-//    		return 0;
-//    	}
-//    }
-//}
 
-//end sam 02
-
+void append(char* s, int c)
+{
+	c = tolower(c);
+	int len = strlen(s);
+	s[len] = c;
+	s[len+1] = '\0';
+}
+void PlayOneNote(int note, int volume, int time) {
+	int notevaule = 1, volumevaule = 1;
+	for(int i=0; i<note-1; i++){
+		notevaule = notevaule * 2;
+	}
+	for(int i=0; i<volume-1; i++){
+		volumevaule = volumevaule * 2;
+	}
+    Xil_Out8(0x41200000,0x01*notevaule);
+	Xil_Out32(0x41210000,0x00001000*volumevaule);
+	int number=0;
+	while(1){
+		number++;
+    	if(number == time*100000){
+    		Xil_Out8(0x41200000,0x00);
+			Xil_Out32(0x41210000,0x00000000);
+			break;
+    	}
+	}
+}
 
 
 int main(){
@@ -329,156 +292,177 @@ int main(){
 	xil_printf("turn on enable\n\r");
 	XGpio_DiscreteWrite(&LFSR_OUT, 1, 1);
 	xil_printf("now start to read input");
-//	int value = XGpio_DiscreteRead(&LFSR_IN, 1);
-//	xil_printf("value is : %i\n\r", value);
+
 	//---------------  End of LFSR with GPIO  --------------------------------------------------//
-
-//current problem is that, right after i triggerred one interrupt, then every pixel drawing need to be depended on next interrupt
-	xil_printf("Initializing plot\n\r");
-	plot_init();
-	plot_outline();
-	plot_Gamestart(0x9999ff00);
-//	for(int i=0;i<36;i++){
-//		plot_char(50+i*10,50,0x9999ff00,i);
-//	}
-
-//	char str1[10] = "1234";
-//	for (int i =0; i<sizeof(str1);i++){
-//		xil_printf("hdagkhghrwehg%i: %i\n\r", i, str1[i]);
-//	}
-
-//	char str[]="thank you for playing";
-//	parse_text(strupr(str), sizeof(str),0x9999ff00);
-
-	display_swap_buffers();
 	int randomCounter=0;
-
-	//sam 03
-
 	int bricks[ brick_size ], backup_brick [ brick_size ];
-	int Ball[4] = { init_ball_x, 3, init_ball_y, 3 };
-	for(int i=0; i< brick_size; i++){
-		bricks[i] = rand() % 5;
-		backup_brick[i] = bricks[i];
-		printf(" [%d]", bricks[i]);
-		if(bricks[i] > 0){
-			count++;
-		}
-	}
-
-
+	int Ball[4] = { init_ball_x, 1 + brick_level, init_ball_y, 1 + brick_level};
 
 	while(1){
-		if (flag_btnc == 1){
-			flag_btnc = 0;
-			break;
-		}
-	}
 
-	while(1) {
-		if (count ==0){
-			for(int i=0; i< brick_size; i++){
-				bricks[i] = rand() % 5;
-				backup_brick[i] = bricks[i];
-				printf(" [%d]", bricks[i]);
-				if(bricks[i] > 0){
-					count++;
+		xil_printf("Initializing plot\n\r");
+		plot_init();
+		plot_outline(brick_level, count);
+		plot_Gamestart(0x9999ff00);
+		display_swap_buffers();
+
+		for(int i=0; i< brick_size; i++){
+			bricks[i] = rand() % 5;
+			backup_brick[i] = bricks[i];
+			printf(" [%d]", bricks[i]);
+			if(bricks[i] > 0){
+				count++;
+			}
+		}
+		next_level = count - 20;
+		printf("\n\r brick count %d\n\r",count);
+		while(1){//remain in menu page until trigger center interrupt
+			if (flag_btnc == 1){
+				flag_btnc = 0;
+				break;
+			}
+		}
+		while(1) {
+			if (count == next_level){
+				count = 0;
+				for(int i=0; i< brick_size; i++){
+					bricks[i] = rand() % 5;
+					backup_brick[i] = bricks[i];//printf(" [%d]", bricks[i]);
+					if(bricks[i] > 0){
+						count++;
+					}
+				}
+				for(int i = 0; i<20; i++){
+					ball_x [i] = 400;
+					ball_y [i] = 550;
+				}
+				brick_level++;
+				next_level = count-20;
+				flag_btnc = 1;
+			}
+			if (flag_btnc == 1){
+				count = 0;
+				init_paddle_x0=385;
+				init_paddle_y0=560;
+				Ball[0] = init_ball_x;
+				Ball[2] = init_ball_y;
+				Ball[1] = 1 + brick_level;
+				Ball[3] = 1 + brick_level;
+				init_ball_r=3;
+				flag_btnc = 0;
+				for(int i=0; i< brick_size; i++){
+					bricks[i] = backup_brick[i];
+					if(bricks[i] > 0){
+						count++;
+					}
+				}
+				for(int i = 0; i<20; i++){
+					ball_x [i] = 400;
+					ball_y [i] = 550;
 				}
 			}
-			brick_level++;
-			flag_btnc = 1;
-		}
-		if (flag_btnc == 1){
-			init_paddle_x0=385;
-			init_paddle_y0=560;
-			Ball[0] = init_ball_x;
-			Ball[2] = init_ball_y;
-			Ball[1] = 2+brick_level;
-			Ball[3] = 2+brick_level;
-			init_ball_r=3;
-			flag_btnc = 0;
-			for(int i=0; i< brick_size; i++){
-				bricks[i] = backup_brick[i];
+			if (flag_btnr == 1 && init_paddle_x0 < 760 - paddle_width){
+				init_paddle_x0 += paddle_width/2;//			xil_printf("paddle_x0: %i \n\r", init_paddle_x0);
+				flag_btnr = 0;
 			}
-		}
-		if (flag_btnr == 1 && init_paddle_x0 < 760 - paddle_width){
-			init_paddle_x0 += paddle_width/2;
-//			xil_printf("paddle_x0: %i \n\r", init_paddle_x0);
-			flag_btnr = 0;
-		}
-		if (flag_btnl == 1 && init_paddle_x0 > 50){
-			init_paddle_x0 -= paddle_width/2;
-//			xil_printf("paddle_x0: %i \n\r", init_paddle_x0);
-			flag_btnl = 0;
-		}
-		if(flag_btnd == 1){
-			break;
-		}
-		if(flag_btnu == 1){
-			printf("\r\n Game pause!\r\n");
-			flag_btnu = 0;
-			plot_outline();
-			plot_Gamepause(0x9999ff00);
+			if (flag_btnl == 1 && init_paddle_x0 > 50){
+				init_paddle_x0 -= paddle_width/2;//			xil_printf("paddle_x0: %i \n\r", init_paddle_x0);
+				flag_btnl = 0;
+			}
+			if(flag_btnd == 1){
+				break;
+			}
+			if(flag_btnu == 1){
+				printf("\r\n Game pause!\r\n");
+				flag_btnu = 0;
+				plot_outline(brick_level, count);
+				plot_Gamepause(0x9999ff00);
+				display_swap_buffers();
+				my_wait();
+				while(1){
+					if(flag_btnu == 1){
+						printf("\r\n Game resume!\r\n");
+						flag_btnu = 0;
+						flag_btnr = 0;
+						flag_btnl = 0;
+						break;
+					}
+					if(flag_btnc == 1){
+						printf("\r\n Game reset!\r\n");
+						flag_btnu = 0;
+						flag_btnr = 0;
+						flag_btnl = 0;
+						break;
+					}
+					if(flag_btnd == 1){
+						printf("\r\n Game end!\r\n");
+						flag_btnu = 0;
+						flag_btnr = 0;
+						flag_btnl = 0;
+						break;
+					}
+				}
+			}
+			BallNextPosition((int *)&Ball, (int *)&bricks);
+//			if(Ball[2] > 580){
+//				flag_btnd = 0;
+//				printf("\r\n Game Over!\r\n");
+//				break;
+//			}
+	//		randomCounter+=1;
+	//		if (randomCounter == 10){
+	//			randomCounter = 0;
+	//			randomValue = XGpio_DiscreteRead(&LFSR_IN, 1);
+	////			xil_printf("random Value is: %i\r\n", randomValue);
+	//		}
+			plot_outline(brick_level, count);
+			plot_paddle(init_paddle_x0,init_paddle_y0,0x9999ff00);
+			for(int i=0; i< brick_size; i++){
+				plot_brick( (i%24)*30+40, (i/24)*20+40, brick_color[bricks[i]] );
+			}
+	//		plot_circle(Ball[0],Ball[2],init_ball_r,0x9999ff00);
+			for(int i=19; i>0 ; i-=2){
+				plot_circle(ball_x[i],ball_y[i],init_ball_r,ball_color[i/2]);
+			}
 			display_swap_buffers();
 			my_wait();
-			while(1){
-				if(flag_btnu == 1){
-					printf("\r\n Game resume!\r\n");
-					flag_btnu = 0;
-					flag_btnr = 0;
-					flag_btnl = 0;
-					break;
-				}
-				if(flag_btnc == 1){
-					printf("\r\n Game reset!\r\n");
-					flag_btnu = 0;
-					flag_btnr = 0;
-					flag_btnl = 0;
-					break;
-				}
-				if(flag_btnd == 1){
-					printf("\r\n Game end!\r\n");
-					flag_btnu = 0;
-					flag_btnr = 0;
-					flag_btnl = 0;
-					break;
-				}
-			}
 		}
-		BallNextPosition((int *)&Ball, (int *)&bricks, PanelPosition);
-		if(Ball[2] > 580){
-			printf("\r\n Game Over!\r\n");
-			break;
+		sleep(1);
+		plot_outline(brick_level, count);
+
+		if(flag_btnd == 1){
+			flag_btnd = 0;
+			plot_Gameend(0x9999ff00);
 		}
-//		randomCounter+=1;
-//		if (randomCounter == 10){
-//			randomCounter = 0;
-//			randomValue = XGpio_DiscreteRead(&LFSR_IN, 1);
-////			xil_printf("random Value is: %i\r\n", randomValue);
-//		}
-		plot_outline();
-		plot_paddle(init_paddle_x0,init_paddle_y0,0x9999ff00);
-		for(int i=0; i< brick_size; i++){
-			plot_brick( (i%24)*30+40, (i/24)*20+40, brick_color[bricks[i]] );
+		else{
+			plot_Gameover(0x9999ff00);
 		}
-		plot_circle(Ball[0],Ball[2],init_ball_r,0x9999ff00);
-//		for(int i=0; i< 5; i++){
-//			plot_circle(ball_x[i],ball_y[i],init_ball_r,0x9999ff00);
-//		}
 		display_swap_buffers();
 		my_wait();
+		flag_btnc = 0;
+		while(1){
+			if(flag_btnc == 1){
+				printf("\r\n Game restart!\r\n");
+				flag_btnc = 0;
+				flag_btnu = 0;
+				flag_btnr = 0;
+				flag_btnl = 0;
+				flag_btnd = 0;
+				count = 0;
+				brick_level = 1;
+				init_paddle_x0=385;
+				init_paddle_y0=560;
+				Ball[0] = init_ball_x;
+				Ball[2] = init_ball_y;
+				Ball[1] = 1 + brick_level;
+				Ball[3] = 1 + brick_level;
+				init_ball_r=3;
+				for(int i = 0; i<20; i++){
+					ball_x [i] = 400;
+					ball_y [i] = 550;
+				}
+				break;
+			}
+		}
 	}
-	sleep(1);
-	plot_outline();
-
-	if(flag_btnd == 1){
-		flag_btnd = 0;
-		plot_Gameend(0x9999ff00);
-	}
-	else{
-		plot_Gameover(0x9999ff00);
-	}
-	display_swap_buffers();
-	my_wait();
-
 }

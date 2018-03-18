@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Users/rswang/Desktop/180309_m3withupdatedInterrupt/180309_m3withupdatedInterrupt.runs/dma_design_1_xbar_0_synth_1'
+HD_PWD='C:/Users/jfa49/Documents/180315_INTEGRATEwithoutVGAupdated/180315_INTEGRATEwithoutVGAupdated.runs/dma_design_1_xbar_0_synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
