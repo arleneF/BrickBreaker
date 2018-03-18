@@ -1,0 +1,394 @@
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Thu Mar 15 13:27:27 2018
+| Host         : ensc-pit-07 running 64-bit major release  (build 9200)
+| Command      : report_methodology -file dma_design_1_wrapper_methodology_drc_routed.rpt -pb dma_design_1_wrapper_methodology_drc_routed.pb -rpx dma_design_1_wrapper_methodology_drc_routed.rpx
+| Design       : dma_design_1_wrapper
+| Device       : xc7z020clg484-1
+| Speed File   : -1
+| Design State : Routed
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Report Methodology
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+             Max violations: <unlimited>
+             Violations found: 71
++-----------+----------+-------------------------------------------------+------------+
+| Rule      | Severity | Description                                     | Violations |
++-----------+----------+-------------------------------------------------+------------+
+| PDRC-190  | Warning  | Suboptimally placed synchronized register chain | 1          |
+| TIMING-6  | Warning  | No common primary clock between related clocks  | 1          |
+| TIMING-7  | Warning  | No common node between related clocks           | 1          |
+| TIMING-16 | Warning  | Large setup violation                           | 49         |
+| TIMING-18 | Warning  | Missing input or output delay                   | 19         |
++-----------+----------+-------------------------------------------------+------------+
+
+2. REPORT DETAILS
+-----------------
+PDRC-190#1 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell dma_design_1_i/fifo_generator_0/U0/inst_fifo_gen/gaxis_fifo.gaxisf.axisf/grf.rf/rstblk/grstd1.grst_full.grst_f.rst_d2_reg in site SLICE_X48Y60 is part of a synchronized register chain that is suboptimally placed as the load FDSE cell dma_design_1_i/fifo_generator_0/U0/inst_fifo_gen/gaxis_fifo.gaxisf.axisf/grf.rf/rstblk/grstd1.grst_full.grst_f.rst_d3_reg is not placed in the same (SLICE) site.
+Related violations: <none>
+
+TIMING-6#1 Warning
+No common primary clock between related clocks  
+The clocks clk_fpga_1 and clk_fpga_0 are related (timed together) but they have no common primary clock. The design could fail in hardware. To find a timing path between these clocks, run the following command: report_timing -from [get_clocks clk_fpga_1] -to [get_clocks clk_fpga_0]
+Related violations: <none>
+
+TIMING-7#1 Warning
+No common node between related clocks  
+The clocks clk_fpga_1 and clk_fpga_0 are related (timed together) but they have no common node. The design could fail in hardware. To find a timing path between these clocks, run the following command: report_timing -from [get_clocks clk_fpga_1] -to [get_clocks clk_fpga_0]
+Related violations: <none>
+
+TIMING-16#1 Warning
+Large setup violation  
+There is a large setup violation of -1.658 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[2]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[42]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#2 Warning
+Large setup violation  
+There is a large setup violation of -1.888 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[16]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[56]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#3 Warning
+Large setup violation  
+There is a large setup violation of -1.976 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[12]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[20]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#4 Warning
+Large setup violation  
+There is a large setup violation of -2.105 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[21]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[29]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#5 Warning
+Large setup violation  
+There is a large setup violation of -2.113 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[20]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[60]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#6 Warning
+Large setup violation  
+There is a large setup violation of -2.116 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[12]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[52]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#7 Warning
+Large setup violation  
+There is a large setup violation of -2.120 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[8]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[16]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#8 Warning
+Large setup violation  
+There is a large setup violation of -2.135 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[11]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[51]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#9 Warning
+Large setup violation  
+There is a large setup violation of -2.159 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[7]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[15]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#10 Warning
+Large setup violation  
+There is a large setup violation of -2.173 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[23]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[63]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#11 Warning
+Large setup violation  
+There is a large setup violation of -2.180 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[13]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[53]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#12 Warning
+Large setup violation  
+There is a large setup violation of -2.182 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[17]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[25]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#13 Warning
+Large setup violation  
+There is a large setup violation of -2.187 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[10]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[50]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#14 Warning
+Large setup violation  
+There is a large setup violation of -2.207 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[10]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[18]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#15 Warning
+Large setup violation  
+There is a large setup violation of -2.228 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[20]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[28]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#16 Warning
+Large setup violation  
+There is a large setup violation of -2.267 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[2]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[10]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#17 Warning
+Large setup violation  
+There is a large setup violation of -2.294 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[21]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[61]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#18 Warning
+Large setup violation  
+There is a large setup violation of -2.304 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[18]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[26]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#19 Warning
+Large setup violation  
+There is a large setup violation of -2.308 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[11]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[19]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#20 Warning
+Large setup violation  
+There is a large setup violation of -2.328 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[16]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[24]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#21 Warning
+Large setup violation  
+There is a large setup violation of -2.340 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[3]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[43]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#22 Warning
+Large setup violation  
+There is a large setup violation of -2.354 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[15]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[55]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#23 Warning
+Large setup violation  
+There is a large setup violation of -2.358 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[19]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[59]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#24 Warning
+Large setup violation  
+There is a large setup violation of -2.373 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[1]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[9]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#25 Warning
+Large setup violation  
+There is a large setup violation of -2.385 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[13]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[21]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#26 Warning
+Large setup violation  
+There is a large setup violation of -2.416 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[9]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[17]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#27 Warning
+Large setup violation  
+There is a large setup violation of -2.418 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[23]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[31]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#28 Warning
+Large setup violation  
+There is a large setup violation of -2.420 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[8]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[48]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#29 Warning
+Large setup violation  
+There is a large setup violation of -2.427 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[1]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[41]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#30 Warning
+Large setup violation  
+There is a large setup violation of -2.431 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[22]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[62]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#31 Warning
+Large setup violation  
+There is a large setup violation of -2.455 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[4]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[44]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#32 Warning
+Large setup violation  
+There is a large setup violation of -2.465 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[14]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[22]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#33 Warning
+Large setup violation  
+There is a large setup violation of -2.466 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[5]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[45]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#34 Warning
+Large setup violation  
+There is a large setup violation of -2.466 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[3]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[11]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#35 Warning
+Large setup violation  
+There is a large setup violation of -2.478 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[4]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[12]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#36 Warning
+Large setup violation  
+There is a large setup violation of -2.484 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[22]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[30]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#37 Warning
+Large setup violation  
+There is a large setup violation of -2.498 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[0]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[40]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#38 Warning
+Large setup violation  
+There is a large setup violation of -2.514 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[9]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[49]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#39 Warning
+Large setup violation  
+There is a large setup violation of -2.518 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[14]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[54]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#40 Warning
+Large setup violation  
+There is a large setup violation of -2.520 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[5]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[13]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#41 Warning
+Large setup violation  
+There is a large setup violation of -2.542 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[0]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[8]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#42 Warning
+Large setup violation  
+There is a large setup violation of -2.544 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[7]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[47]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#43 Warning
+Large setup violation  
+There is a large setup violation of -2.550 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[15]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[23]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#44 Warning
+Large setup violation  
+There is a large setup violation of -2.553 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[6]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[14]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#45 Warning
+Large setup violation  
+There is a large setup violation of -2.638 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[17]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[57]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#46 Warning
+Large setup violation  
+There is a large setup violation of -2.940 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[6]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[46]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#47 Warning
+Large setup violation  
+There is a large setup violation of -4.041 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_r_freeze_100_reg[19]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[27]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#48 Warning
+Large setup violation  
+There is a large setup violation of -4.062 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/hphone_l_freeze_100_reg[18]/C (clocked by clk_fpga_0) and dma_design_1_i/audio_testbench_0/U0/i_audio/Inst_adau1761_izedboard/Inst_i2s_data_interface/sr_out_reg[58]/D (clocked by zed_audio_clk_48M). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#49 Warning
+Large setup violation  
+There is a large setup violation of -4.568 ns between dma_design_1_i/audio_testbench_0/U0/i_audio/sample_clk_48k_d3_48_reg__0/C (clocked by zed_audio_clk_48M) and dma_design_1_i/audio_testbench_0/U0/i_audio/sample_clk_48k_d4_100_reg/D (clocked by clk_fpga_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-18#1 Warning
+Missing input or output delay  
+An input delay is missing on button_0[0] relative to clock(s) clk_fpga_0
+Related violations: <none>
+
+TIMING-18#2 Warning
+Missing input or output delay  
+An input delay is missing on button_0[1] relative to clock(s) clk_fpga_0
+Related violations: <none>
+
+TIMING-18#3 Warning
+Missing input or output delay  
+An input delay is missing on button_0[2] relative to clock(s) clk_fpga_0
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An input delay is missing on button_0[3] relative to clock(s) clk_fpga_0
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An input delay is missing on button_0[4] relative to clock(s) clk_fpga_0
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An output delay is missing on blue_0[0] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An output delay is missing on blue_0[1] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An output delay is missing on blue_0[2] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An output delay is missing on blue_0[3] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
+An output delay is missing on green_0[0] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#11 Warning
+Missing input or output delay  
+An output delay is missing on green_0[1] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#12 Warning
+Missing input or output delay  
+An output delay is missing on green_0[2] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#13 Warning
+Missing input or output delay  
+An output delay is missing on green_0[3] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#14 Warning
+Missing input or output delay  
+An output delay is missing on hsync_0 relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#15 Warning
+Missing input or output delay  
+An output delay is missing on red_0[0] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#16 Warning
+Missing input or output delay  
+An output delay is missing on red_0[1] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#17 Warning
+Missing input or output delay  
+An output delay is missing on red_0[2] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#18 Warning
+Missing input or output delay  
+An output delay is missing on red_0[3] relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+TIMING-18#19 Warning
+Missing input or output delay  
+An output delay is missing on vsync_0 relative to clock(s) clk_fpga_1
+Related violations: <none>
+
+

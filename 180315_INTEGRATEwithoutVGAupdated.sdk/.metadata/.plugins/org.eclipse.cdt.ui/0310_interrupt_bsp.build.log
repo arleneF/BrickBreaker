@@ -1,0 +1,6 @@
+12:43:35 **** Build of project 0310_interrupt_bsp ****
+make -k all 
+make: *** No rule to make target `all'.
+
+12:43:35 Build Finished (took 201ms)
+

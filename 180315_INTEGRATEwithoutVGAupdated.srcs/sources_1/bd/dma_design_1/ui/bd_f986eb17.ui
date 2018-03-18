@@ -1,0 +1,91 @@
+{
+   ExpandedHierarchyInLayout: "",
+   guistr: "# # String gsaved with Nlview 6.6.11  2017-06-12 bk=1.3860 VDI=40 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port AC_GPIO2_0 -pg 1 -y 150 -defaultsOSRD
+preplace port AC_ADR0_0 -pg 1 -y 70 -defaultsOSRD
+preplace port DDR -pg 1 -y 610 -defaultsOSRD
+preplace port AC_GPIO1_0 -pg 1 -y 130 -defaultsOSRD
+preplace port AC_GPIO3_0 -pg 1 -y 170 -defaultsOSRD
+preplace port hsync_0 -pg 1 -y 970 -defaultsOSRD
+preplace port AC_MCLK_0 -pg 1 -y 130 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -y 630 -defaultsOSRD
+preplace port AC_SCK_0 -pg 1 -y 150 -defaultsOSRD
+preplace port vsync_0 -pg 1 -y 990 -defaultsOSRD
+preplace port AC_SDA_0 -pg 1 -y 170 -defaultsOSRD
+preplace port AC_GPIO0_0 -pg 1 -y 110 -defaultsOSRD
+preplace port AC_ADR1_0 -pg 1 -y 90 -defaultsOSRD
+preplace portBus blue_0 -pg 1 -y 1050 -defaultsOSRD
+preplace portBus green_0 -pg 1 -y 1030 -defaultsOSRD
+preplace portBus button_0 -pg 1 -y 1040 -defaultsOSRD
+preplace portBus red_0 -pg 1 -y 1010 -defaultsOSRD
+preplace inst axi_vdma_0 -pg 1 -lvl 3 -y 960 -defaultsOSRD
+preplace inst audio_testbench_0 -pg 1 -lvl 5 -y 120 -defaultsOSRD
+preplace inst axi_smc -pg 1 -lvl 4 -y 820 -defaultsOSRD
+preplace inst axi_gpio_0 -pg 1 -lvl 3 -y 480 -defaultsOSRD
+preplace inst xlconcat_0 -pg 1 -lvl 3 -y 350 -defaultsOSRD
+preplace inst proc_sys_reset_0 -pg 1 -lvl 4 -y 1170 -defaultsOSRD
+preplace inst axi_gpio_1 -pg 1 -lvl 3 -y 620 -defaultsOSRD
+preplace inst try_vga_0 -pg 1 -lvl 5 -y 1020 -defaultsOSRD
+preplace inst axi_gpio_2 -pg 1 -lvl 3 -y 760 -defaultsOSRD
+preplace inst axi_gpio_3 -pg 1 -lvl 3 -y 70 -defaultsOSRD
+preplace inst axi_gpio_4 -pg 1 -lvl 3 -y 230 -defaultsOSRD
+preplace inst ps7_0_axi_periph -pg 1 -lvl 2 -y 730 -defaultsOSRD
+preplace inst fifo_generator_0 -pg 1 -lvl 4 -y 980 -defaultsOSRD
+preplace inst Debounce_0 -pg 1 -lvl 2 -y 1030 -defaultsOSRD
+preplace inst rst_ps7_0_100M -pg 1 -lvl 1 -y 610 -defaultsOSRD
+preplace inst LSFR_0 -pg 1 -lvl 4 -y 670 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 5 -y 700 -defaultsOSRD
+preplace netloc processing_system7_0_DDR 1 5 1 NJ
+preplace netloc ps7_0_axi_periph_M02_AXI 1 2 1 730
+preplace netloc axi_gpio_3_gpio_io_o 1 3 2 1120 90 NJ
+preplace netloc try_vga_0_fsync_outp 1 2 4 760 1260 NJ 1260 NJ 1260 2000
+preplace netloc audio_testbench_0_AC_GPIO0 1 5 1 NJ
+preplace netloc try_vga_0_red 1 5 1 NJ
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 5 380 510 710J 550 NJ 550 NJ 550 2010
+preplace netloc axi_vdma_0_M_AXI_MM2S 1 3 1 1170
+preplace netloc try_vga_0_vsync 1 5 1 NJ
+preplace netloc audio_testbench_0_AC_ADR0 1 5 1 NJ
+preplace netloc rst_ps7_0_100M_peripheral_aresetn 1 1 3 370 960 700 840 1150
+preplace netloc axi_vdma_0_M_AXIS_MM2S 1 3 1 N
+preplace netloc axi_smc_M00_AXI 1 4 1 1520
+preplace netloc fifo_generator_0_m_axis_tdata 1 4 1 1520
+preplace netloc audio_testbench_0_AC_ADR1 1 5 1 NJ
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 6 30 1100 NJ 1100 NJ 1100 1160 750 1510J 840 2000
+preplace netloc ps7_0_axi_periph_M03_AXI 1 2 1 N
+preplace netloc try_vga_0_green 1 5 1 NJ
+preplace netloc axi_gpio_4_gpio_io_o 1 3 2 1120 110 NJ
+preplace netloc button_0_1 1 0 2 NJ 1040 NJ
+preplace netloc ps7_0_axi_periph_M01_AXI 1 2 1 690
+preplace netloc try_vga_0_blue 1 5 1 NJ
+preplace netloc try_vga_0_hsync 1 5 1 NJ
+preplace netloc LSFR_0_Q 1 3 2 1120J 740 1510
+preplace netloc axi_gpio_1_gpio_io_o 1 3 1 1130
+preplace netloc xlconcat_0_dout 1 3 2 NJ 350 1530
+preplace netloc processing_system7_0_FIXED_IO 1 5 1 NJ
+preplace netloc axi_vdma_0_mm2s_introut 1 2 2 750 850 1130
+preplace netloc proc_sys_reset_0_peripheral_aresetn 1 4 1 1540
+preplace netloc AC_GPIO1_0_1 1 0 5 NJ 130 NJ 130 760J 140 NJ 140 1530J
+preplace netloc axi_gpio_0_ip2intc_irpt 1 2 2 760 410 1140
+preplace netloc ps7_0_axi_periph_M05_AXI 1 2 1 680
+preplace netloc ps7_0_axi_periph_M04_AXI 1 2 1 660
+preplace netloc Net1 1 3 3 1170 1080 1530 850 2010
+preplace netloc Net 1 5 1 NJ
+preplace netloc AC_GPIO2_0_1 1 0 5 NJ 150 NJ 150 NJ 150 NJ 150 NJ
+preplace netloc Debounce_0_result 1 2 2 740 690 1120
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 6 20 700 380 950 720 830 1140 600 1540 560 2000
+preplace netloc ps7_0_axi_periph_M00_AXI 1 2 1 670
+preplace netloc audio_testbench_0_AC_SCK 1 5 1 NJ
+preplace netloc AC_GPIO3_0_1 1 0 5 NJ 170 NJ 170 680J 160 NJ 160 1530J
+preplace netloc fifo_generator_0_m_axis_tvalid 1 4 1 N
+preplace netloc try_vga_0_tready 1 4 1 1510
+preplace netloc audio_testbench_0_AC_MCLK 1 5 1 NJ
+preplace netloc rst_ps7_0_100M_interconnect_aresetn 1 1 1 370
+levelinfo -pg 1 0 200 520 940 1340 1770 2030 -top 0 -bot 1270
+",
+}
+{
+   da_axi4_cnt: "7",
+   da_board_cnt: "3",
+   da_clkrst_cnt: "5",
+}

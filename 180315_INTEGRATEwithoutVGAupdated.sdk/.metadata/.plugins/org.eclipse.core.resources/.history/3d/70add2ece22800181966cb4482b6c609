@@ -1,0 +1,141 @@
+/*
+ * plotting_api.h
+ *
+ *  Created on: Mar 10, 2018
+ *      Author: JFA49
+ */
+
+#ifndef SRC_PLOTTING_API_H_
+#define SRC_PLOTTING_API_H_
+#include "xil_printf.h"
+#include <string.h>
+#include "vga_text.h"
+#include "display_api.h"
+#include <stdlib.h>
+
+#define DISPLAY_MEMORY_BASE	0x01000000
+
+// define the axis of the plot.
+//static unsigned int _canvas_margin, _canvas_x_size, _canvas_y_size, _canvas_y_mid;
+static Rect topwall,rightwall,leftwall;
+static Rect paddle;
+static Circle ball;
+//static Rect _canvas_rect;
+static u32 _background_color = COLOR_BLACK;
+//static u32 _canvas_color = COLOR_WHITE;
+
+void define_3_walls(){
+	topwall.x0=0; topwall.y0=0; topwall.xsz=800; topwall.ysz=20;
+	rightwall.x0=0; rightwall.y0=20; rightwall.xsz=20; rightwall.ysz=580;
+	leftwall.x0=780; leftwall.y0=20; leftwall.xsz=20; leftwall.ysz=580;
+}
+
+
+void plot_init() {
+//	xil_printf("7\n\r");
+	display_init(DISPLAY_MEMORY_BASE);
+	display_fill_screen(_background_color);
+//	xil_printf("8\n\r");
+	display_swap_buffers();
+}
+
+//x and y is the starting point of this number
+//void plot_number1(int x, int y, u32 color){
+//	for (int i=0;i<16;i++) //row
+//		for (int j=0;j<8;j++)//col
+//			if (number1[i][j]==1)
+//				display_draw_point(color, x+j, y+i);
+//}
+
+//x and y is the starting point of this number
+void plot_char(int x, int y, u32 color, int letterIndex){
+	for (int i=0;i<16;i++) //row
+		for (int j=0;j<8;j++)//col
+			if (letter[letterIndex][i][j]==1)
+				display_draw_point(color, x+j, y+i);
+}
+
+void plot_outline() {
+	define_3_walls();
+//	xil_printf("9\n\r");
+	display_fill_screen(_background_color);
+//	xil_printf("10\n\r");
+	display_draw_rect(0xff99ff00, topwall);
+	display_draw_rect(0xff99ff00, rightwall);
+//	xil_printf("11\n\r");
+	display_draw_rect(0xff99ff00, leftwall);
+
+// level : 1.
+}
+
+void plot_paddle(int x, int y, u32 color){
+	paddle.x0=x;
+	paddle.y0=y;
+	paddle.xsz=60;
+	paddle.ysz=20;
+	display_draw_rect(color, paddle);
+}
+//sam
+void plot_brick(int x, int y, u32 color){
+	paddle.x0=x;
+	paddle.y0=y;
+	paddle.xsz=28;
+	paddle.ysz=18;
+	display_draw_rect(color, paddle);
+}
+//sam 01
+void plot_circle(int x, int y, int r, u32 color){
+	ball.r=r;
+	ball.x0=x;
+	ball.y0=y;
+	display_draw_circle(color, ball);
+}
+void plot_line(int x, int y, int xlong, int ylong, u32 color){
+	paddle.x0=x;
+	paddle.y0=y;
+	paddle.xsz=xlong;
+	paddle.ysz=ylong;
+	display_draw_rect(color, paddle);
+}
+void plot_Gameover(u32 color){
+	plot_line(50, 50, 50 , 5, color);
+	plot_line(50, 50, 5, 100 , color);
+	plot_line(50, 150, 50, 5 , color);
+	plot_line(95, 100, 5, 50 , color);
+	plot_line(82, 100, 30, 5 , color);
+	//Game over.
+}
+
+void parse_text(char *text){
+//	int num = 'A';
+//	xil_printf("lalakdfja : %i", num);
+
+//	char str[10] = "ABCD";
+//	for (int i =0; i<sizeof(str);i++)
+//		xil_printf("%i: %i\n\r", i, str[i]);
+	int index=0;
+	xil_printf("size is : %i", sizeof(text));
+	for(int i =0; i<sizeof(text);i++){
+		int current = text[i]; //convert to integer
+		xil_printf("index = %i\n\r", index);
+		if (current >=65){ // A-Z
+			index = current-65+10;
+			plot_char(50+i*10,50,0x9999ff00,index);}
+		if (current >=48 && current <=57){ // number
+			index=current-48;
+			xil_printf("here: index = %i", index);
+			plot_char(50+i*10,50,0x9999ff00,index);
+		}
+	}
+}
+void plot_Gameend(u32 color){
+	//thank you for playing !!
+}
+void plot_Gamepause(u32 color){
+	// game pause play push again to resume
+}
+void plot_Gamestart(u32 color){
+	//welcome, please push the center bottom to start.
+}
+
+#endif /* SRC_PLOTTING_API_H_ */

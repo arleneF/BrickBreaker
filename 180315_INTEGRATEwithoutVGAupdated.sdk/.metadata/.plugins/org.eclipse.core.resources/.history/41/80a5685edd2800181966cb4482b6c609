@@ -1,0 +1,475 @@
+
+#include "plotting_api.h"
+#include <xuartps_hw.h>
+#include "xstatus.h"
+#include "xil_printf.h"
+#include "xil_mmu.h"
+#include "xil_assert.h"
+#include <stdio.h> /* printf */
+#include "xscugic.h"
+#include "xil_exception.h"
+#include "xgpio.h"
+#include "interrupt_btn.h"
+#include "vga_text.h"
+
+
+//sam 01
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
+#include "platform.h"
+#include "xil_io.h"
+//#include <conio.h>
+#include <time.h>
+#include "xparameters.h"
+#include "xscugic.h"
+//end sam 01
+
+// variables for LFSR
+#define LFSR_OUT_DEVICE_ID			XPAR_AXI_GPIO_1_DEVICE_ID
+#define LFSR_IN_DEVICE_ID			XPAR_AXI_GPIO_2_DEVICE_ID
+static XGpio LFSR_OUT;
+static XGpio LFSR_IN;
+int randomValue = 0;
+
+void my_wait() {
+	for (int i=0; i< 1e5; i++) {
+		;
+	}
+}
+int init_paddle_x0=385;
+int init_paddle_y0=560;
+int init_ball_r = 3;
+//sam 02
+int brick_level = 1;
+int count =0;
+int PanelPosition = 7;
+int brick_size = 360;
+int paddle_width = 60;
+int init_ball_x = 400;
+int init_ball_y = 550;
+u32 brick_color[5] = {0x00000000, 0xffefff00, 0xff99ff00, 0xff66ff00, 0xff00ff00};
+int ball_x [5] ={400, 400, 400, 400, 400};
+int ball_y [5] ={550, 550, 550, 550, 550};
+
+
+
+
+void append(char* s, int c)
+{
+	c = tolower(c);
+	int len = strlen(s);
+	s[len] = c;
+	s[len+1] = '\0';
+}
+void PlayOneNote(int note, int volume, int time) {
+	int notevaule = 1, volumevaule = 1;
+	for(int i=0; i<note-1; i++){
+		notevaule = notevaule * 2;
+	}
+	for(int i=0; i<volume-1; i++){
+		volumevaule = volumevaule * 2;
+	}
+    Xil_Out8(0x41200000,0x01*notevaule);
+	Xil_Out32(0x41210000,0x00001000*volumevaule);
+	int number=0;
+	while(1){
+		number++;
+    	if(number == time*100000){
+    		Xil_Out8(0x41200000,0x00);
+			Xil_Out32(0x41210000,0x00000000);
+			break;
+    	}
+	}
+}
+void ReadLine (char* str){
+    while(1){
+    	int choice = inbyte();
+    	if(choice == '\033'){
+    		inbyte(); // skip the [
+			switch(inbyte()) { // the real value
+				case 'A':
+					printf("up");
+					fflush( stdout );
+					append(str, 'u');
+					append(str, 'p');
+					break;
+				case 'B':
+					printf("down");
+					fflush( stdout );
+					append(str, 'd');
+					append(str, 'o');
+					append(str, 'w');
+					append(str, 'n');
+					break;
+				case 'C':
+					printf("right");
+					fflush( stdout );
+					append(str, 'r');
+					append(str, 'i');
+					append(str, 'g');
+					append(str, 'h');
+					append(str, 't');
+					break;
+				case 'D':
+					printf("left");
+					fflush( stdout );
+					append(str, 'l');
+					append(str, 'e');
+					append(str, 'f');
+					append(str, 't');
+					break;
+			}
+    	}
+    	else if( choice>=32 && choice<=122 ){
+    		printf("%c", choice);
+    		fflush( stdout );
+    		append(str, choice);
+    	}
+    	else{
+    		printf("\n\r%s\n", str);
+    		break;
+    	}
+    }
+
+}
+
+float randomSpeed (int ball){
+	return ball;
+	if (XGpio_DiscreteRead(&LFSR_IN, 1) % 2){
+		return ball + 1;
+	}else{
+		if(ball==1){
+			return ball;
+		}
+		return ball - 1;
+	}
+}
+
+void BallNextPosition( int *Ball, int *bricks, int PanelPosition){
+	int XbricksPosition , YbricksPosition;
+	if(((Ball[0]+Ball[1])-40)/30<=23){XbricksPosition=((Ball[2]-40)/20*24+((Ball[0]+Ball[1])-40)/30);}else{XbricksPosition=-1;}
+	if((Ball[0]-40)/30<=23){YbricksPosition=(((Ball[2] + Ball[3])-40)/20*24+(Ball[0]-40)/30);}else{YbricksPosition=-1;}
+
+    if( Ball[0] + Ball[1] <= 20 + init_ball_r|| //if the ball hits the edge
+    	Ball[0] + Ball[1] >= 780 - init_ball_r ){
+    	Ball[1] = - randomSpeed(Ball[1]);
+    }
+    else if( bricks[XbricksPosition] > 0 && XbricksPosition >= 0 && XbricksPosition < brick_size &&
+    		 bricks[YbricksPosition] > 0 && YbricksPosition >= 0  && YbricksPosition <  brick_size){ //if the ball hits the brick
+//    	printf("\n\r [%d: %d, %d: %d] \n\r", XbricksPosition, bricks[XbricksPosition], YbricksPosition, bricks[YbricksPosition]);
+    	if(XbricksPosition != YbricksPosition){
+    		Ball[1] = - randomSpeed(Ball[1]);
+    		Ball[3] = - randomSpeed(Ball[3]);
+//    		printf("\n\r corner \n\r");
+    	}
+    	else{
+    		int brick_x= (XbricksPosition%24)*30+40+15;
+    		int brick_y = (XbricksPosition/24)*20+40+10;
+    		if(Ball[0] < brick_x && Ball[2] < brick_y){
+    		    Ball[1] = - abs(randomSpeed(Ball[1]));
+    		    Ball[3] = - abs(randomSpeed(Ball[3]));
+//    		    printf("\n\r left up \n\r");
+    		}
+    		else if(Ball[0] > brick_x && Ball[2] < brick_y){
+    		    Ball[1] = abs(randomSpeed(Ball[1]));
+    		    Ball[3] = - abs(randomSpeed(Ball[3]));
+//    		    printf("\n\r right up \n\r");
+    		}
+    		else if(Ball[0] < brick_x && Ball[2] > brick_y){
+    		    Ball[1] = - abs(randomSpeed(Ball[1]));
+    		    Ball[3] = abs(randomSpeed(Ball[3]));
+//    		    printf("\n\r left down \n\r");
+    		}
+    		else{
+    		    Ball[1] = abs(randomSpeed(Ball[1]));
+    		    Ball[3] = abs(randomSpeed(Ball[3]));
+//    		    printf("\n\r right down \n\r");
+    		}
+
+    	}
+    	bricks[XbricksPosition]--; //brick gone
+    	if(bricks[XbricksPosition] > 0){
+//    		 printf("X brick position: [%d] hit, brick level down to %d\n\r", XbricksPosition, bricks[XbricksPosition]);
+    	}
+    	else{
+    		count--;
+			printf("X brick position: [%d] gone, brick count %d\n\r", XbricksPosition, count);
+    	}
+    }
+    else if( bricks[XbricksPosition] > 0 && XbricksPosition >= 0 && XbricksPosition < brick_size){ //if the ball hits the brick
+    	Ball[1] = - randomSpeed(Ball[1]);
+    	bricks[XbricksPosition]--; //brick gone
+    	if(bricks[XbricksPosition] > 0){
+//    		 printf("X brick position: [%d] hit, brick level down to %d\n\r", XbricksPosition, bricks[XbricksPosition]);
+    	}
+    	else{
+    	 	count--;
+			printf("X brick position: [%d] gone, brick count %d\n\r", XbricksPosition, count);
+    	}
+    }
+    else if(Ball[0] + Ball[1] - init_ball_r >= init_paddle_x0 &&
+    		Ball[0] + Ball[1] - init_ball_r <= init_paddle_x0 + paddle_width &&
+			Ball[2] >= 560 && Ball[2] <= 580 && Ball[1]<0){
+    	Ball[0]= init_paddle_x0 + paddle_width - Ball[1] - init_ball_r;
+    	Ball[1] = -randomSpeed(Ball[1]);  //if the ball hits the panel
+    	 printf("\n\rif the ball hits the panel right\n\r");
+    }
+    else if(Ball[0] + Ball[1] + init_ball_r >= init_paddle_x0 &&
+    		Ball[0] + Ball[1] + init_ball_r <= init_paddle_x0+ paddle_width &&
+			Ball[2] >= 560 && Ball[2] <= 580){
+    	Ball[0]=init_paddle_x0 - Ball[1] - init_ball_r;
+    	Ball[1] = -randomSpeed(Ball[1]);  //if the ball hits the panel
+    	 printf("\n\rif the ball hits the panel left\n\r");
+    }
+    else{
+        if( Ball[2] + Ball[3] <= 20 + init_ball_r ||
+        	Ball[2] + Ball[3] >= 600 - init_ball_r ){  //if the ball hits the edge
+        	Ball[3] = - randomSpeed(Ball[3]);
+        }
+        else if( bricks[YbricksPosition] > 0 && YbricksPosition >= 0  && YbricksPosition <  brick_size){ //if the ball hits the brick
+           	Ball[3] = - randomSpeed(Ball[3]);
+        	bricks[YbricksPosition]--; //brick gone
+        	if(bricks[YbricksPosition] > 0){
+//        		 printf("Y brick position: [%d] hited, brick level down to %d\n\r", YbricksPosition, bricks[YbricksPosition]);
+        	}
+        	else{
+        		count--;
+    			printf("Y brick position: [%d] gone, brick count %d\n\r", YbricksPosition, count);
+        	}
+        }
+        else if(Ball[0] +init_ball_r  > init_paddle_x0 &&
+        		Ball[0] +init_ball_r  < init_paddle_x0  + paddle_width&&
+    			Ball[2] + Ball[3] +init_ball_r >= 560 && Ball[2] + Ball[3] +init_ball_r <= 580){
+        	Ball[2] = 560 - init_ball_r - Ball[3];
+        	Ball[3] = - randomSpeed(Ball[3]);
+//        	printf("\n\rif the ball hits the YYYYYYYYYYYYYYY\n\r");//if the ball hits the panel
+        }
+        else{}
+    }
+    Ball[0] = Ball[0] + Ball[1];
+    Ball[2] = Ball[2] + Ball[3];
+//	for(int i=4; i>0; i--){
+//		ball_x[i] = ball_x[i-1];
+//		ball_y[i] = ball_y[i-1];
+//	}
+//	ball_x[0] = Ball[0];
+//	ball_y[0] = Ball[2];
+}
+
+
+//int PlayGame (){
+//	int count =0;
+//	int bricks[ brick_size ];
+//	float Ball[4] = { 40.0, -0.1, 50.0, 0.2 };
+//    for(int i=0; i< brick_size; i++){
+//    	 bricks[i] = XGpio_DiscreteRead(&LFSR_IN, 1) % 5;
+//    }
+//    for(int i=0; i< brick_size; i++){
+//    	printf(" [%d]", bricks[i]);
+//    	if(bricks[i] > 0){
+//    		 count++;
+//    	}
+//    }
+//    printf("\n\r brick count %d\n\r",count);
+//    while(1){
+//    	BallNextPosition((float *)&Ball, (int *)&bricks, PanelPosition);
+//    	usleep(10);
+////    	printf(" [%f, %f, %f, %f]", Ball[0], Ball[1], Ball[2], Ball[3]);
+//    	if(Ball[2] > 470){
+//    		printf(" [%f, %f, %f, %f]", Ball[0], Ball[1], Ball[2], Ball[3]);
+//    		count=0;
+//    	    for(int i=0; i< brick_size; i++){
+////    	    	printf(" [%d]", bricks[i]);
+//    	    	if(bricks[i] > 0){
+//    	    		 count++;
+//    	    	}
+//    	    }
+//    		printf("Game over: brick left %d\n\r", count);
+//    		return 0;
+//    	}
+//    }
+//}
+
+//end sam 02
+
+
+
+int main(){
+//---------------  INTRs  --------------------------------------------------//
+//	int status;
+//	/* Initialize Push Buttons */
+//	status = XGpio_Initialize(&BTNInst, BTNS_DEVICE_ID);
+//	if (status != XST_SUCCESS) return XST_FAILURE;
+//	/* Set all buttons direction to inputs */
+//	XGpio_SetDataDirection(&BTNInst, 1, 0xFF);
+//	/* Initialize interrupt controller */
+//	status = IntcInitFunction(INTC_DEVICE_ID, &BTNInst);
+//	if (status != XST_SUCCESS) return XST_FAILURE;
+	Init_Gpio();
+//---------------  End of INTRs  -------------------------------------------//
+
+//---------------  LFSR with GPIO  --------------------------------------------------//
+	int Status1;
+	Status1 = XGpio_Initialize(&LFSR_OUT, LFSR_OUT_DEVICE_ID);
+	if (Status1 != XST_SUCCESS) {return XST_FAILURE;}
+	int Status2;
+	Status2 = XGpio_Initialize(&LFSR_IN, LFSR_IN_DEVICE_ID);
+	if (Status2 != XST_SUCCESS) {return XST_FAILURE;}
+
+	//Bits set to 0 are output and bits set to 1 are input.
+	//GPIO 1 is 1 bit output, GPIO 2 is 8 bit intput
+	XGpio_SetDataDirection(&LFSR_OUT, 1, 0);
+	XGpio_SetDataDirection(&LFSR_IN, 1, 0xFF);
+	int num = 'A';
+	xil_printf("lalakdfja : %i", num);
+	xil_printf("turn on enable\n\r");
+	XGpio_DiscreteWrite(&LFSR_OUT, 1, 1);
+	xil_printf("now start to read input");
+//	int value = XGpio_DiscreteRead(&LFSR_IN, 1);
+//	xil_printf("value is : %i\n\r", value);
+	//---------------  End of LFSR with GPIO  --------------------------------------------------//
+
+//current problem is that, right after i triggerred one interrupt, then every pixel drawing need to be depended on next interrupt
+	xil_printf("Initializing plot\n\r");
+	plot_init();
+	plot_outline();
+	plot_Gamestart(0x9999ff00);
+	for(int i=0;i<36;i++){
+		plot_char(50+i*10,50,0x9999ff00,i);
+	}
+
+	display_swap_buffers();
+	int randomCounter=0;
+
+	//sam 03
+
+	int bricks[ brick_size ], backup_brick [ brick_size ];
+	int Ball[4] = { init_ball_x, 3, init_ball_y, 3 };
+	for(int i=0; i< brick_size; i++){
+		bricks[i] = rand() % 5;
+		backup_brick[i] = bricks[i];
+		printf(" [%d]", bricks[i]);
+		if(bricks[i] > 0){
+			count++;
+		}
+	}
+
+	printf("\n\r brick count %d\n\r",count);
+
+
+
+	while(1){
+		if (flag_btnc == 1){
+			flag_btnc = 0;
+			break;
+		}
+	}
+
+	while(1) {
+		if (count ==0){
+			for(int i=0; i< brick_size; i++){
+				bricks[i] = rand() % 5;
+				backup_brick[i] = bricks[i];
+				printf(" [%d]", bricks[i]);
+				if(bricks[i] > 0){
+					count++;
+				}
+			}
+			brick_level++;
+			flag_btnc = 1;
+		}
+		if (flag_btnc == 1){
+			init_paddle_x0=385;
+			init_paddle_y0=560;
+			Ball[0] = init_ball_x;
+			Ball[2] = init_ball_y;
+			Ball[1] = 2+brick_level;
+			Ball[3] = 2+brick_level;
+			init_ball_r=3;
+			flag_btnc = 0;
+			for(int i=0; i< brick_size; i++){
+				bricks[i] = backup_brick[i];
+			}
+		}
+		if (flag_btnr == 1 && init_paddle_x0 < 760 - paddle_width){
+			init_paddle_x0 += paddle_width/2;
+//			xil_printf("paddle_x0: %i \n\r", init_paddle_x0);
+			flag_btnr = 0;
+		}
+		if (flag_btnl == 1 && init_paddle_x0 > 50){
+			init_paddle_x0 -= paddle_width/2;
+//			xil_printf("paddle_x0: %i \n\r", init_paddle_x0);
+			flag_btnl = 0;
+		}
+		if(flag_btnd == 1){
+			break;
+		}
+		if(flag_btnu == 1){
+			printf("\r\n Game pause!\r\n");
+			flag_btnu = 0;
+			plot_outline();
+			plot_Gamepause(0x9999ff00);
+			display_swap_buffers();
+			my_wait();
+			while(1){
+				if(flag_btnu == 1){
+					printf("\r\n Game resume!\r\n");
+					flag_btnu = 0;
+					flag_btnr = 0;
+					flag_btnl = 0;
+					break;
+				}
+				if(flag_btnc == 1){
+					printf("\r\n Game reset!\r\n");
+					flag_btnu = 0;
+					flag_btnr = 0;
+					flag_btnl = 0;
+					break;
+				}
+				if(flag_btnd == 1){
+					printf("\r\n Game end!\r\n");
+					flag_btnu = 0;
+					flag_btnr = 0;
+					flag_btnl = 0;
+					break;
+				}
+			}
+		}
+		BallNextPosition((int *)&Ball, (int *)&bricks, PanelPosition);
+//		if(Ball[2] > 580){
+//			printf("\r\n Game Over!\r\n");
+//			break;
+//		}
+//		randomCounter+=1;
+//		if (randomCounter == 10){
+//			randomCounter = 0;
+//			randomValue = XGpio_DiscreteRead(&LFSR_IN, 1);
+////			xil_printf("random Value is: %i\r\n", randomValue);
+//		}
+		plot_outline();
+		plot_paddle(init_paddle_x0,init_paddle_y0,0x9999ff00);
+		for(int i=0; i< brick_size; i++){
+			plot_brick( (i%24)*30+40, (i/24)*20+40, brick_color[bricks[i]] );
+		}
+		plot_circle(Ball[0],Ball[2],init_ball_r,0x9999ff00);
+//		for(int i=0; i< 5; i++){
+//			plot_circle(ball_x[i],ball_y[i],init_ball_r,0x9999ff00);
+//		}
+		display_swap_buffers();
+		my_wait();
+	}
+	sleep(1);
+	plot_outline();
+
+	if(flag_btnd == 1){
+		flag_btnd = 0;
+		plot_Gameend(0x9999ff00);
+	}
+	else{
+		plot_Gameover(0x9999ff00);
+	}
+	display_swap_buffers();
+	my_wait();
+
+}

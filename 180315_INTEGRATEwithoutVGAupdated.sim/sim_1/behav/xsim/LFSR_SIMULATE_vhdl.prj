@@ -1,0 +1,6 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../180312_Integration_M4_update_debounce_LFSR.srcs/sim_1/new/LFSR_SIMULATE.vhd" \
+
+# Do not sort compile order
+nosort

@@ -1,0 +1,154 @@
+/* Simplified API for doing basic operations with the VDMA
+ * Wesley Kendall 2018
+ *
+ */
+
+/*** Include file ***/
+#ifndef DISPLAY_API_H_
+#define DISPLAY_API_H_
+
+#include "xparameters.h"
+#include "xstatus.h"
+#include "xil_exception.h"
+#include "xil_assert.h"
+#include "xaxivdma.h"
+#include "xaxivdma_i.h"
+#include "xil_cache.h"
+#include "vdma_api.h"
+#include "stdlib.h"
+#include "math.h"
+
+#define COLOR_RED   0xFF000000
+#define COLOR_GREEN 0x00FF0000
+#define COLOR_BLUE  0x0000FF00
+#define COLOR_BLUE2 0x000000FF
+#define COLOR_WHITE  0xFFFFFFFF
+#define COLOR_BLACK  0x00000000
+
+#define DISPLAY_X_SIZE 800
+#define DISPLAY_Y_SIZE 600
+#define DISPLAY_TOTAL_MEM_SIZE DISPLAY_Y_SIZE*DISPLAY_X_SIZE
+
+#define N_FRAME_BUFFERS 2
+//
+int active_buffer_i = 0;
+int writable_buffer_i = 1;
+u32* buffer[N_FRAME_BUFFERS];
+XAxiVdma VdmaInstancePtr;
+
+
+typedef struct {
+	int x0, y0, xsz, ysz;
+} Rect;
+
+typedef struct {
+	int x0,y0,r;
+} Circle;
+
+typedef struct {
+	int x0, y0;
+} Point;
+
+int display_init(u32 srcBuffer) {
+ 	int status;
+ 	status = VDMAReset(&VdmaInstancePtr);
+	if (status != XST_SUCCESS) {
+		xil_printf("Reset failed\n");
+		return XST_FAILURE;
+	};
+
+	// RUN VDMA CONTINUOUSLY
+	status = VDMAInit(&VdmaInstancePtr, 0, DISPLAY_X_SIZE, DISPLAY_Y_SIZE,
+						srcBuffer);
+	if (status != XST_SUCCESS) {
+		xil_printf("Transfer of frames failed with error = %d\r\n", status);
+		return XST_FAILURE;
+	} else {
+		xil_printf("Transfer of frames started \r\n");
+	}
+
+	for (int i=0; i < N_FRAME_BUFFERS; i++) {
+		buffer[i] = (u32*) vdma_context->ReadCfg.FrameStoreStartAddr[i];
+	}
+	return XST_SUCCESS;
+}
+
+
+void display_fill_screen(u32 color) {
+	for (u32 i=0; i < (DISPLAY_X_SIZE*DISPLAY_Y_SIZE); i++) {
+		((u32*)buffer[writable_buffer_i])[i] = color;
+	}
+}
+
+void display_draw_rect(u32 color, Rect rect) {
+	for (u32 i=rect.x0; i < (rect.x0 + rect.xsz); i++) {
+		for (u32 j=rect.y0; j < (rect.y0 + rect.ysz); j++) {
+			u32 pos = i + j*DISPLAY_X_SIZE;
+			if (pos < DISPLAY_TOTAL_MEM_SIZE) {
+				((u32*)buffer[writable_buffer_i])[pos] = color;
+			}
+		}
+	}
+}
+
+void display_draw_point(u32 color, int x, int y){
+	u32 pos = x + y*DISPLAY_X_SIZE;
+	if (pos < DISPLAY_TOTAL_MEM_SIZE)
+		((u32*)buffer[writable_buffer_i])[pos] = color;
+}
+
+void display_draw_circle(u32 color, Circle ball){
+	for (u32 i=(ball.x0-ball.r); i<=(ball.x0+ball.r);i++)
+		for (u32 j=(ball.y0-ball.r); j<=(ball.y0+ball.r);j++){
+			u32 pos=i+j*DISPLAY_X_SIZE;
+			if ((((i-ball.x0)*(i-ball.x0)+(j-ball.y0)*(j-ball.y0))<=(ball.r*ball.r)) && (pos < DISPLAY_TOTAL_MEM_SIZE) )
+				((u32*)buffer[writable_buffer_i])[pos] = color;
+		}
+}
+
+//x and y is the starting point of this number
+void plot_char(int x, int y, u32 color, int letterIndex){
+	for (int i=0;i<16;i++) //row
+		for (int j=0;j<8;j++)//col
+			if (letter[letterIndex][i][j]==1)
+				display_draw_point(color, x+j, y+i);
+}
+
+void parse_text(char *text, int length,u32 color, int x, int y){
+//	int num = 'A';
+//	xil_printf("lalakdfja : %i", num);
+
+//	char str[10] = "ABCD";
+//	for (int i =0; i<sizeof(str);i++)
+//		xil_printf("%i: %i\n\r", i, str[i]);
+	int index=0;
+	for(int i =0; i<length;i++){
+		int current = text[i]; //convert to integer
+		if (current >=65){ // A-Z
+			index = current-65+10;
+			plot_char(x+i*10,y,color,index);}
+		if (current >=48 && current <=57){ // number
+			index=current-48;
+			plot_char(x+i*10,y,color,index);
+		}
+//		if (current ==0){
+//			index=+37;
+//			plot_char(x+i*10,y,color,index);
+//		}
+		if (current == 32 && current !=0){
+			index= 37;
+			plot_char(x+i*10,y,color,index);
+		}
+	}
+}
+
+void display_swap_buffers() {
+	Xil_DCacheFlushRange((u32)buffer[writable_buffer_i], DISPLAY_TOTAL_MEM_SIZE*4);
+	// access dma to change buffer pointer
+	VDMAUpdateParkPtr(writable_buffer_i);
+	// update variables
+	active_buffer_i   = (active_buffer_i + 1) % N_FRAME_BUFFERS;
+	writable_buffer_i = (writable_buffer_i+1) % N_FRAME_BUFFERS;
+}
+
+#endif //DISPLAY_API_H_

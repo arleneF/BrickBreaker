@@ -1,0 +1,26 @@
+vhdl xil_defaultlib  \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_smc_0/bd_0/ip/ip_1/sim/bd_a967_psr_aclk_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_smc_0/sim/dma_design_1_axi_smc_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_vdma_0_0/sim/dma_design_1_axi_vdma_0_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_proc_sys_reset_0_0/sim/dma_design_1_proc_sys_reset_0_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_rst_ps7_0_100M_0/sim/dma_design_1_rst_ps7_0_100M_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_v_tc_0_0/sim/dma_design_1_v_tc_0_0.vhd" \
+"../../../bd/dma_design_1/sim/dma_design_1.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_gpio_0_0/sim/dma_design_1_axi_gpio_0_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_LSFR_0_0/sim/dma_design_1_LSFR_0_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_gpio_1_0/sim/dma_design_1_axi_gpio_1_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_gpio_2_3/sim/dma_design_1_axi_gpio_2_3.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/ADAU1761_interface.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/adau1761_configuraiton_data.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/adau1761_izedboard.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/audio_top.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/clocking.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/i2c.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/i2s_data_interface.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/i3c2.vhd" \
+"../../../bd/dma_design_1/ipshared/6036/src/audio_testbench.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_audio_testbench_0_0/sim/dma_design_1_audio_testbench_0_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_gpio_3_0/sim/dma_design_1_axi_gpio_3_0.vhd" \
+"../../../bd/dma_design_1/ip/dma_design_1_axi_gpio_4_0/sim/dma_design_1_axi_gpio_4_0.vhd" \
+
+nosort
